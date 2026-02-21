@@ -1,4 +1,10 @@
 #!/usr/bin/python3
+"""
+0-subs.py
+
+This module queries the Reddit API and returns
+the number of subscribers for a given subreddit.
+"""
 import requests
 def number_of_subscribers(subreddit):
     """Return the number of subscribers for a given subreddit."""
