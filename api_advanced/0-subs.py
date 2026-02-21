@@ -5,6 +5,7 @@
 This module queries the Reddit API and returns
 the number of subscribers for a given subreddit.
 """
+
 import requests
 
 
@@ -22,8 +23,6 @@ def number_of_subscribers(subreddit):
             data = response.json()
             return data.get("data", {}).get("subscribers", 0)
         else:
-            # Invalid subreddit or redirect
             return 0
     except Exception:
         return 0
-    
