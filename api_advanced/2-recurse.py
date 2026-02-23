@@ -43,4 +43,3 @@ def recurse(subreddit, hot_list=None, after=None):
 
     except Exception:
         return None
-
