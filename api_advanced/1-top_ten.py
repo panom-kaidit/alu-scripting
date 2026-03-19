@@ -10,26 +10,45 @@ import requests
 
 
 def top_ten(subreddit):
-    """Print the titles of the first 10 hot posts of a subreddit."""
-    url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
+    """Prints the titles of the first 10 hot posts for ``subreddit``.
 
+    Requirements from the project:
+    - Do **not** follow redirects (invalid subs may redirect to search).
+    - On any error or invalid subreddit, print ``None``.
+    """
+
+    if not subreddit or not isinstance(subreddit, str):
+        print(None)
+        return
+
+    # Using api.reddit.com is a bit more lenient and avoids some geo/UA blocks.
+    url = "https://api.reddit.com/r/{}/hot".format(subreddit)
+    params = {"limit": 10}
     headers = {
         "User-Agent": "linux:alu-api-project:v1.0 (by /u/anonymous)"
     }
 
     try:
-        response = requests.get(
+        resp = requests.get(
             url,
             headers=headers,
-            allow_redirects=False
+            params=params,
+            allow_redirects=False,
+            timeout=10,
         )
 
-        if response.status_code == 200:
-            posts = response.json().get("data", {}).get("children", [])
-            for post in posts:
-                print(post.get("data", {}).get("title"))
-        else:
+        if resp.status_code != 200:
             print(None)
+            return
+
+        children = resp.json().get("data", {}).get("children", [])
+        if not children:
+            print(None)
+            return
+
+        for post in children:
+            print(post.get("data", {}).get("title"))
 
     except Exception:
+        # Any network/parse error should result in the expected None output.
         print(None)
