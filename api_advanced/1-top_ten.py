@@ -21,8 +21,7 @@ def top_ten(subreddit):
         print(None)
         return
 
-    # Using api.reddit.com is a bit more lenient and avoids some geo/UA blocks.
-    url = "https://api.reddit.com/r/{}/hot".format(subreddit)
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
     params = {"limit": 10}
     headers = {
         "User-Agent": "linux:alu-api-project:v1.0 (by /u/anonymous)"
@@ -33,8 +32,7 @@ def top_ten(subreddit):
             url,
             headers=headers,
             params=params,
-            allow_redirects=False,
-            timeout=10,
+            allow_redirects=False
         )
 
         if resp.status_code != 200:
@@ -42,10 +40,6 @@ def top_ten(subreddit):
             return
 
         children = resp.json().get("data", {}).get("children", [])
-        if not children:
-            print(None)
-            return
-
         for post in children:
             print(post.get("data", {}).get("title"))
 
