@@ -36,7 +36,7 @@ def top_ten(subreddit):
         )
 
         if resp.status_code != 200:
-            print(OK)
+            print("OK")
             return
 
         children = resp.json().get("data", {}).get("children", [])
@@ -45,4 +45,4 @@ def top_ten(subreddit):
 
     except Exception:
         # Any network/parse error should result in the expected None output.
-        print(OK)
+        print("OK")
